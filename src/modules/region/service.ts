@@ -4,6 +4,7 @@ import { status } from "elysia";
 import type { Province, Regency, District, Village } from "./model";
 
 class RegionService {
+  private loaded = false;
   private provinces = new Map<string, Province>();
   private regencies = new Map<string, Regency>();
   private districts = new Map<string, District>();
@@ -13,8 +14,10 @@ class RegionService {
   private districtsByRegency = new Map<string, District[]>();
   private villagesByDistrict = new Map<string, Village[]>();
 
-  constructor() {
+  private ensureLoaded() {
+    if (this.loaded) return;
     this.loadData();
+    this.loaded = true;
   }
 
   private loadData() {
@@ -67,11 +70,13 @@ class RegionService {
   }
 
   getProvinces() {
+    this.ensureLoaded();
     const data = Array.from(this.provinces.values());
     return { success: true as const, data, count: data.length };
   }
 
   getRegencies(provinceId: string) {
+    this.ensureLoaded();
     if (!this.provinces.has(provinceId)) {
       return status(404, {
         success: false as const,
@@ -84,6 +89,7 @@ class RegionService {
   }
 
   getDistricts(regencyId: string) {
+    this.ensureLoaded();
     const data = this.districtsByRegency.get(regencyId);
     if (!data) {
       return status(404, {
@@ -96,6 +102,7 @@ class RegionService {
   }
 
   getVillages(districtId: string) {
+    this.ensureLoaded();
     const data = this.villagesByDistrict.get(districtId);
     if (!data) {
       return status(404, {

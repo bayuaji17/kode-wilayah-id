@@ -39,7 +39,7 @@ const app = new Elysia()
       error: "Internal server error",
     });
   });
-// Remove for for production deploy
+// Remove for production deploy
 // .listen(3000);
 
 export default app;
