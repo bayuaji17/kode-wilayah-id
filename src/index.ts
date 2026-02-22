@@ -4,7 +4,7 @@ import { corsPlugin } from "./plugins/cors";
 import { loggerPlugin } from "./plugins/logger";
 import { regionModule } from "./modules/region";
 
-export default new Elysia()
+const app = new Elysia()
   .use(loggerPlugin)
   .use(corsPlugin)
   .get("/", () => "Server Active")
@@ -40,3 +40,5 @@ export default new Elysia()
     });
   })
   .listen(3000);
+
+export default app;
