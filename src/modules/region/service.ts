@@ -115,4 +115,11 @@ class RegionService {
   }
 }
 
-export const regionService = new RegionService();
+let regionServiceInstance: RegionService | null = null;
+
+export function getRegionService(): RegionService {
+  if (!regionServiceInstance) {
+    regionServiceInstance = new RegionService();
+  }
+  return regionServiceInstance;
+}

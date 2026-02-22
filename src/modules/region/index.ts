@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { regionService } from "./service";
+import { getRegionService } from "./service";
 import {
   ProvinceModel,
   RegencyModel,
@@ -25,7 +25,7 @@ export const regionModule = new Elysia({ name: "region" })
     "/provinces",
     ({ set }) => {
       set.headers["cache-control"] = "public, max-age=604800, immutable";
-      return regionService.getProvinces();
+      return getRegionService().getProvinces();
     },
     {
       detail: {
@@ -40,7 +40,7 @@ export const regionModule = new Elysia({ name: "region" })
     "/regencies/:province_id",
     ({ params, set }) => {
       set.headers["cache-control"] = "public, max-age=604800, immutable";
-      return regionService.getRegencies(params.province_id);
+      return getRegionService().getRegencies(params.province_id);
     },
     {
       params: t.Object({
@@ -63,7 +63,7 @@ export const regionModule = new Elysia({ name: "region" })
     "/districts/:regency_id",
     ({ params, set }) => {
       set.headers["cache-control"] = "public, max-age=604800, immutable";
-      return regionService.getDistricts(params.regency_id);
+      return getRegionService().getDistricts(params.regency_id);
     },
     {
       params: t.Object({
@@ -86,7 +86,7 @@ export const regionModule = new Elysia({ name: "region" })
     "/villages/:district_id",
     ({ params, set }) => {
       set.headers["cache-control"] = "public, max-age=604800, immutable";
-      return regionService.getVillages(params.district_id);
+      return getRegionService().getVillages(params.district_id);
     },
     {
       params: t.Object({
