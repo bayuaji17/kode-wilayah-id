@@ -132,7 +132,8 @@ const app = new Elysia()
       },
     },
   )
-  .onError(({ code }) => {
+  .onError(({ code, error }) => {
+    console.error("[Error]", code, error);
     if (code === "VALIDATION") {
       return {
         status: 400,
@@ -140,10 +141,12 @@ const app = new Elysia()
         error: "Path parameter cannot be empty",
       };
     }
+    const message =
+      error instanceof Error ? error.message : "Internal server error";
     return {
       status: 500,
       success: false,
-      error: "Internal server error",
+      error: message,
     };
   });
 

@@ -21,8 +21,35 @@ class RegionService {
   }
 
   private loadData() {
-    const filePath = path.join(import.meta.dir, "../../assets/base.csv");
-    const csv = readFileSync(filePath, "utf-8");
+    // Try multiple path resolution strategies for different environments
+    const possiblePaths = [
+      path.join(import.meta.dir, "../../assets/base.csv"),
+      path.join(process.cwd(), "src/assets/base.csv"),
+      path.join(__dirname, "../../assets/base.csv"),
+      "./src/assets/base.csv",
+    ];
+
+    let csv: string | null = null;
+    let lastError: Error | null = null;
+
+    for (const filePath of possiblePaths) {
+      try {
+        csv = readFileSync(filePath, "utf-8");
+        console.log(`[RegionService] Loaded CSV from: ${filePath}`);
+        break;
+      } catch (err) {
+        lastError = err as Error;
+        console.log(`[RegionService] Failed to load from: ${filePath}`);
+      }
+    }
+
+    if (!csv) {
+      console.error("[RegionService] Failed to load base.csv from any path");
+      throw new Error(
+        `Could not load base.csv. Last error: ${lastError?.message}`,
+      );
+    }
+
     const lines = csv.trim().split("\n");
 
     for (const line of lines) {
