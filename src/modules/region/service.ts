@@ -18,7 +18,7 @@ class RegionService {
   }
 
   private loadData() {
-    const filePath = path.join(process.cwd(), "src/assets/base.csv");
+    const filePath = path.join(import.meta.dir, "../../assets/base.csv");
     const csv = readFileSync(filePath, "utf-8");
     const lines = csv.trim().split("\n");
 
