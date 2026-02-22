@@ -36,6 +36,17 @@ const app = new Elysia()
       },
     }),
   )
+  .model({
+    Province: ProvinceModel,
+    Regency: RegencyModel,
+    District: DistrictModel,
+    Village: VillageModel,
+    ProvinceResponse: SuccessResponse(ProvinceModel),
+    RegencyResponse: SuccessResponse(RegencyModel),
+    DistrictResponse: SuccessResponse(DistrictModel),
+    VillageResponse: SuccessResponse(VillageModel),
+    ErrorResponse: ErrorResponse,
+  })
   .get("/", () => "Server Active")
   .get(
     "/provinces",
@@ -121,17 +132,6 @@ const app = new Elysia()
       },
     },
   )
-  .model({
-    Province: ProvinceModel,
-    Regency: RegencyModel,
-    District: DistrictModel,
-    Village: VillageModel,
-    ProvinceResponse: SuccessResponse(ProvinceModel),
-    RegencyResponse: SuccessResponse(RegencyModel),
-    DistrictResponse: SuccessResponse(DistrictModel),
-    VillageResponse: SuccessResponse(VillageModel),
-    ErrorResponse: ErrorResponse,
-  })
   .onError(({ code }) => {
     if (code === "VALIDATION") {
       return {
